@@ -10,7 +10,7 @@ export class SentryProjectController {
 
     public async index(req: Request, res: Response) {
         try {
-            res.status(HttpStatusCode.Ok).json(SuccessResponse.setSuccessRespose('Success get data direct messages', HttpStatusCode.Ok, null));
+            res.status(HttpStatusCode.Ok).json(SuccessResponse.setSuccessRespose('OK', HttpStatusCode.Ok, null));
         } catch (error) {
             res.json(error);
         }

@@ -5,12 +5,16 @@ import configureDI from './app.module';
 import bodyParser from 'body-parser';
 import connection from './database/config';
 import { SentryProjectSyncScheduler } from './scheduler/sentry-project-sync.scheduler';
+import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
 
 //init Express APP
 const port = config.app.port;
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Add logging middleware
+app.use(loggingMiddleware);
 
 //init database
 connection.sync({ alter: true })

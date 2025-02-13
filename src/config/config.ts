@@ -6,6 +6,9 @@ export const config = {
         port: process.env.APP_PORT || 3000,
         env: process.env.APP_ENV || 'development',
     },
+    logging: {
+        level: process.env.LOG_LEVEL || 'info',
+    },
     sentry: {
         api: {
             authToken: process.env.SENTRY_API_AUTH_TOKEN || '',

@@ -1,20 +1,20 @@
+import express from 'express';
 import DIContainer, { IDIContainer } from "rsdi";
-import { DirectMessageController } from "../controllers/direct-message.controller";
 import * as core from 'express-serve-static-core';
 import { SuccessResponse } from "../utils/response";
-import { TweetController } from "../controllers/tweet.controller";
+import { SentryProjectController } from '../controllers/sentry/sentry-project.controller';
 
 export default function configureRouter(app: core.Express, diContainer: DIContainer<{[key: string]: any;}>) {
-    const direcMessageController = diContainer.get<DirectMessageController>(DirectMessageController.name);
-    const tweetController = diContainer.get<TweetController>(TweetController.name);
+    const sentryProjectController = diContainer.get<SentryProjectController>(SentryProjectController.name);
 
-    app.get('/', (_, res) => {
-        res.json(SuccessResponse.setSuccessRespose("Welcome to Twitter Automenfess API", 200, []));
-    })
+    /** Health Check Endpoint */
+    app.get('/health-check', (_, res) => {
+        res.json(SuccessResponse.setSuccessRespose("OK", 200, []));
+    });
 
-    app.get('/direct-message', direcMessageController.listDirectMessage.bind(direcMessageController));
-    app.get('/direct-message/:id', direcMessageController.getDetailDirectMessage.bind(direcMessageController));
-    app.post('/direct-message', direcMessageController.sendDirectMessage.bind(direcMessageController));
+    /** Init Router */
+    const router = express.Router();
+    router.get('/sentry-projects', sentryProjectController.index.bind(sentryProjectController));
 
-    app.post('/tweet', tweetController.postTweet.bind(tweetController));
+    app.use('/api', router);
 }

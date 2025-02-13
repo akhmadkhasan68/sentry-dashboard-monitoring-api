@@ -1,8 +1,6 @@
 export class SuccessResponse {
     message: string;
-
     code: number;
-
     data: any | any[];
 
     static setSuccessRespose(message: string, code: number, data: any | any[]): SuccessResponse {
