@@ -1,23 +1,29 @@
 import { CronJob } from "cron";
 import { SentryProjectService } from "../services/sentry/sentry-project.service";
 import { CronExpressionConstant } from "../utils/constants/cron-expression.constant";
+import { LoggerHelper } from "../infrastructure/logger/logger";
 
 export class SentryProjectSyncScheduler {
+    private readonly logger: LoggerHelper;
+
     constructor(
         private readonly sentryProjectService: SentryProjectService,
-    ) {}
+    ) {
+        this.logger = new LoggerHelper(SentryProjectSyncScheduler.name);
+    }
 
     public initScheduler(): void {
+        this.logger.setLogger.info('init sentry project sync scheduler... 🚀');
         try {
             return new CronJob(CronExpressionConstant.EVERY_1_MINUTE, async () => {
-                // console.log('run sync direct message to db... 🚀');
-                // await this.schedulerService.syncDirectMessageToDatabase();
+                this.logger.setLogger.info('run sync sentry project... 🚀');
 
-                // console.log('run post tweet confirmed... 🚀');
-                // await this.schedulerService.postTweetConfirmedDirectMessage();
+                await this.sentryProjectService.syncSentryProjectToInternalDatabase();
+
+                this.logger.setLogger.info('sync sentry project successfully... 🚀');
             }).start();
         } catch (error) {
-            console.log(error);
+            this.logger.setLogger.error(`Error when run scheduler: ${error.message}`);
         }
     }
 }

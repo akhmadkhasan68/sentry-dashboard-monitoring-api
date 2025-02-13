@@ -16,6 +16,7 @@ const connection = new Sequelize({
     ProjectModel,
     SentryProjectModel,
     SentryTeamModel,
+    SentryTeamModel,
   ],
 });
 

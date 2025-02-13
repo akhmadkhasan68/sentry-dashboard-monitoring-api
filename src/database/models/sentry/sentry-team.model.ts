@@ -8,8 +8,8 @@ import { ISentryTeam } from "../../interfaces/sentry/sentry-team.interface";
 })
 export class SentryTeamModel extends BaseModel implements ISentryTeam {
     @Column({
-        type: DataType.STRING,
-        allowNull: false,
+        type: DataType.UUID,
+        allowNull: true,
     })
     projectId: string;
     

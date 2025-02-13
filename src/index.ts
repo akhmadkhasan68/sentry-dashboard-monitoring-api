@@ -6,6 +6,9 @@ import bodyParser from 'body-parser';
 import connection from './database/config';
 import { SentryProjectSyncScheduler } from './scheduler/sentry-project-sync.scheduler';
 import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
+import { LoggerHelper } from './infrastructure/logger/logger';
+import { SentryTeamSyncScheduler } from './scheduler/sentry-team-sync.scheduler';
+import { SchedulerService } from './scheduler.service';
 
 //init Express APP
 const port = config.app.port;
@@ -16,24 +19,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Add logging middleware
 app.use(loggingMiddleware);
 
+const logger = new LoggerHelper('App');
+
 //init database
 connection.sync({ alter: true })
 .then(() => {
-  console.log("Database successfully connected... 🚀");
+  logger.setLogger.info('Database connected successfully... 🚀');
 })
 .catch((err) => {
-  console.log("Error", err);
-});
+  logger.setLogger.error(`Error when connect to database: ${err.message}`);
 
-//init twitter client API
-// const twitterClientAuthService = new TwitterClientAuthService();
-// const twitterClient: TwitterApi = twitterClientAuthService.initClient();
+  process.exit(1);
+});
 
 //init modules & routes
 const diContainer = configureDI();
 configureRouter(app, diContainer);
 
 //init scheduler
-diContainer.get<SentryProjectSyncScheduler>(SentryProjectSyncScheduler.name).initScheduler();
+new SchedulerService(diContainer).start();
 
-app.listen(port, () => console.log(`Application running on port ${port}... 🚀`));
+app.listen(port, () => logger.setLogger.info(`Server is running on port ${port}... 🚀`));

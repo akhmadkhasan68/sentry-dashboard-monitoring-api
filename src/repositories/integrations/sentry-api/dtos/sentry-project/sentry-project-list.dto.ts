@@ -2,7 +2,7 @@ import { SentryProjectStatusEnum } from "../../enums/sentry-project-status.enum"
 import { SentryAvatarDto } from "../common/sentry-avatar.dto";
 import { SentryOrganizationDto } from "../sentry-organization/sentry-organization.dto";
 
-export interface SentryProjectList {
+export interface SentryProjectListDto {
     id: string;
     slug: string;
     name: string;

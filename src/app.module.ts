@@ -6,6 +6,9 @@ import { ProjectRepository } from "./repositories/project.repository";
 import { SentryTeamService } from "./services/sentry/sentry-team.service";
 import { SentryProjectSyncScheduler } from "./scheduler/sentry-project-sync.scheduler";
 import { SentryProjectController } from "./controllers/sentry/sentry-project.controller";
+import { SentryApiProjectRepository } from "./repositories/integrations/sentry-api/sentry-api-project.repository";
+import { SentryApiTeamRepository } from "./repositories/integrations/sentry-api/sentry-api-team.repository";
+import { SentryTeamSyncScheduler } from "./scheduler/sentry-team-sync.scheduler";
 
 
 export default function configureDI() {
@@ -14,6 +17,10 @@ export default function configureDI() {
     }> = new DIContainer();
 
     container.add({
+        /** External Repositories */
+        [SentryApiProjectRepository.name]: new SentryApiProjectRepository,
+        [SentryApiTeamRepository.name]: new SentryApiTeamRepository,
+
         /** Repositories */
         [SentryProjectRepository.name]: new SentryProjectRepository,
         [SentryTeamRepository.name]: new SentryTeamRepository,
@@ -21,10 +28,12 @@ export default function configureDI() {
 
         /** Services */
         [SentryProjectService.name]: object(SentryProjectService).construct(
-            use(SentryProjectRepository)
+            use(SentryProjectRepository),
+            use(SentryApiProjectRepository),
         ),
         [SentryTeamService.name]: object(SentryTeamService).construct(
-            use(SentryTeamRepository)
+            use(SentryTeamRepository),
+            use(SentryApiTeamRepository),
         ),
 
         // [TwitterDirectMessageService.name]: object(TwitterDirectMessageService).construct(
@@ -45,6 +54,9 @@ export default function configureDI() {
         /** Scheduler */
         [SentryProjectSyncScheduler.name]: object(SentryProjectSyncScheduler).construct(
             use(SentryProjectService)
+        ),
+        [SentryTeamSyncScheduler.name]: object(SentryTeamSyncScheduler).construct(
+            use(SentryTeamService)
         ),
     });
 
