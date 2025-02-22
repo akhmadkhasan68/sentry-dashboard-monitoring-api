@@ -14,11 +14,11 @@ import { SentryOrganizationUserRepository } from "./repositories/sentry/sentry-o
 import { SentryOrganizationUserScheduler } from "./scheduler/sentry-organization-user.scheduler";
 import { SentryOrganizationUserService } from "./services/sentry/sentry-organization-user.service";
 import { SentryApiOrganizationProjectRepository } from "./repositories/integrations/sentry-api/sentry-api-organization-project.repository";
-import { ProjectEntity } from "./database/entities/project.entity";
-import { AppDataSource } from "./database/config";
+import { ProjectEntity } from "./database/entities/project/project.entity";
 import { SentryProjectEntity } from "./database/entities/sentry/sentry-project.entity";
 import { SentryTeamEntity } from "./database/entities/sentry/sentry-team.entity";
 import { SentryOrganizationUserEntity } from "./database/entities/sentry/sentry-organization-user.entity";
+import AppDataSource from "./database/config";
 
 
 export default function configureDI() {

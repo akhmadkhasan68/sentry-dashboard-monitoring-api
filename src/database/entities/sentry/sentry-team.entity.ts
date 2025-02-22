@@ -4,7 +4,7 @@ import { ISentryProject } from "../../interfaces/sentry/sentry-project.interface
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { IProject } from "../../interfaces/project.interface";
 import { SentryProjectEntity } from "./sentry-project.entity";
-import { ProjectEntity } from "../project.entity";
+import { ProjectEntity } from "../project/project.entity";
 
 @Entity({
     name: "sentry_teams",

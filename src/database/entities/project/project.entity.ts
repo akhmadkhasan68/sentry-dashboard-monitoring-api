@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { IProject } from "../interfaces/project.interface";
-import { BaseEntity } from "./base.entity";
-import { ISentryTeam } from "../interfaces/sentry/sentry-team.interface";
-import { SentryTeamEntity } from "./sentry/sentry-team.entity";
+import { BaseEntity } from "../base.entity";
+import { IProject } from "../../interfaces/project.interface";
+import { SentryTeamEntity } from "../sentry/sentry-team.entity";
+import { ISentryTeam } from "../../interfaces/sentry/sentry-team.interface";
 
 @Entity({
     name: "projects",

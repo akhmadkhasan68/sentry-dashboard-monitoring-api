@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
 import { LoggerHelper } from './infrastructure/logger/logger';
 import { SchedulerService } from './scheduler.service';
-import { AppDataSource } from './database/config';
+import AppDataSource from './database/config';
 
 //init Express APP
 const port = config.app.port;
