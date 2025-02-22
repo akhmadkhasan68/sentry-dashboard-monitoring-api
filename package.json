@@ -5,12 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist",
     "start": "tsc & node .",
     "dev": "tsc -w & nodemon .",
+    "typeorm": "typeorm-ts-node-esm",
     "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create",
-    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -d ./src/database/config.ts",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/config.ts",
-    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d ./src/database/config.ts"
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate -d ./src/database/datasource.config.ts",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/database/datasource.config.ts",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert -d ./src/database/datasource.config.ts"
   },
   "author": "Akhmad Khasan A",
   "license": "ISC",

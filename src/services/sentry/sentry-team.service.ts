@@ -41,7 +41,7 @@ export class SentryTeamService {
                 return existingSentryTeams.some((existingTeam) => existingTeam.sentryTeamId === team.sentryTeamId);
             }).map((team): ISentryTeam => {
                 return {
-                    id: existingSentryTeams.find((existingTeam) => existingTeam.sentryTeamId === team.sentryTeamId).id,
+                    id: existingSentryTeams.find((existingTeam) => existingTeam.sentryTeamId === team.sentryTeamId)?.id,
                     sentryTeamId: team.sentryTeamId,
                     sentryTeamName: team.sentryTeamName,
                     sentryTeamSlug: team.sentryTeamSlug,

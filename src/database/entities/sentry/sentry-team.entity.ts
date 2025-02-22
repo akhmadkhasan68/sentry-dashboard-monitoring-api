@@ -12,7 +12,7 @@ import { ProjectEntity } from "../project/project.entity";
 export class SentryTeamEntity extends BaseEntity implements ISentryTeam {
     @Column({
         type: "uuid",
-        nullable: false,
+        nullable: true,
     })
     projectId: string;
     

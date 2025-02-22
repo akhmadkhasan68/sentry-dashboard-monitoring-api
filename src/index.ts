@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
 import { LoggerHelper } from './infrastructure/logger/logger';
 import { SchedulerService } from './scheduler.service';
-import AppDataSource from './database/config';
+import AppDataSource from "./database/datasource.config";
 
 //init Express APP
 const port = config.app.port;
@@ -21,9 +21,12 @@ const logger = new LoggerHelper('App');
 
 //init database
 AppDataSource.initialize().then(() => {
-    logger.setLogger.info('Database connection established... 🎉');
+  logger.setLogger.info('Database connection established... 🎉');
 }).catch((error) => {
-    logger.setLogger.error(`Database connection failed: ${error}... 😢`)
+  console.log(error);
+  console.log(error.message);
+  console.log(error.stack);
+  logger.setLogger.error(`Database connection failed: ${error}... 😢`)
 });
 
 //init modules & routes

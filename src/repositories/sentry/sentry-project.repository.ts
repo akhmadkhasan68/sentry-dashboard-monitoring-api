@@ -34,7 +34,7 @@ export class SentryProjectRepository {
         }
 
         const [items, total] = await query
-            .orderBy(sort, order)
+            .orderBy(sort ?? "createdAt", order)
             .skip(offset)
             .take(perPage)
             .getManyAndCount();

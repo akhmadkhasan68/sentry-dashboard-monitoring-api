@@ -40,7 +40,7 @@ export class SentryOrganizationUserService {
                 return existingSentryOrganizationUsers.some((existingOrganizationUser) => existingOrganizationUser.sentryUserId === organizationUser.sentryUserId);
             }).map((organizationUser): ISentryOrganizationUser => {
                 return {
-                    id: existingSentryOrganizationUsers.find((existingOrganizationUser) => existingOrganizationUser.sentryUserId === organizationUser.sentryUserId).id,
+                    id: existingSentryOrganizationUsers.find((existingOrganizationUser) => existingOrganizationUser.sentryUserId === organizationUser.sentryUserId)?.id,
                     sentryUserId: organizationUser.sentryUserId,
                     sentryUserEmail: organizationUser.sentryUserEmail,
                     sentryUserName: organizationUser.sentryUserName,

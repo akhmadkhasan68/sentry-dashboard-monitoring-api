@@ -18,7 +18,7 @@ import { ProjectEntity } from "./database/entities/project/project.entity";
 import { SentryProjectEntity } from "./database/entities/sentry/sentry-project.entity";
 import { SentryTeamEntity } from "./database/entities/sentry/sentry-team.entity";
 import { SentryOrganizationUserEntity } from "./database/entities/sentry/sentry-organization-user.entity";
-import AppDataSource from "./database/config";
+import AppDataSource from "./database/datasource.config";
 
 
 export default function configureDI() {
