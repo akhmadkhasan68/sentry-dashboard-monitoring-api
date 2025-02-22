@@ -1,31 +1,22 @@
-import { Sequelize } from "sequelize-typescript";
 import { config } from "../config/config";
-import { Dialect } from "sequelize";
-import { ProjectModel } from "./models/project.model";
-import { SentryProjectModel } from "./models/sentry/sentry-project.model";
-import { SentryTeamModel } from "./models/sentry/sentry-team.model";
-import { SentryOrganizationUserModel } from "./models/sentry/sentry-organization-user.model";
+import { DataSource } from "typeorm";
+import { ProjectEntity } from "./entities/project.entity";
+import { SentryProjectEntity } from "./entities/sentry/sentry-project.entity";
+import { SentryTeamEntity } from "./entities/sentry/sentry-team.entity";
+import { SentryOrganizationUserEntity } from "./entities/sentry/sentry-organization-user.entity";
 
-const connection = new Sequelize({
-  dialect: config.database.dialect as Dialect,
+export const AppDataSource = new DataSource({
+  type: 'mysql',
   host: config.database.host,
   username: config.database.username,
   password: config.database.password,
   database: config.database.name,
   logging: false,
-  pool: { // TODO: add to config
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
-  models: [
-    ProjectModel,
-    SentryProjectModel,
-    SentryTeamModel,
-    SentryTeamModel,
-    SentryOrganizationUserModel,
+  entities: [
+    ProjectEntity,
+    SentryProjectEntity,
+    SentryTeamEntity,
+    SentryOrganizationUserEntity,
   ],
+  synchronize: false,
 });
-
-export default connection;

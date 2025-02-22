@@ -3,10 +3,10 @@ import { config } from './config/config';
 import configureRouter from './routes/index.routes';
 import configureDI from './app.module';
 import bodyParser from 'body-parser';
-import connection from './database/config';
 import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
 import { LoggerHelper } from './infrastructure/logger/logger';
 import { SchedulerService } from './scheduler.service';
+import { AppDataSource } from './database/config';
 
 //init Express APP
 const port = config.app.port;
@@ -20,11 +20,10 @@ app.use(loggingMiddleware);
 const logger = new LoggerHelper('App');
 
 //init database
-connection.authenticate().then(() => {
-  logger.setLogger.info('Database connected successfully... 🚀');
-}
-).catch((err) => {
-  logger.setLogger.error(`Error when connect to database: ${err.message}`);
+AppDataSource.initialize().then(() => {
+    logger.setLogger.info('Database connection established... 🎉');
+}).catch((error) => {
+    logger.setLogger.error(`Database connection failed: ${error}... 😢`)
 });
 
 //init modules & routes

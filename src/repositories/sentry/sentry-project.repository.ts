@@ -1,10 +1,14 @@
-import { SentryProjectModel } from "../../database/models/sentry/sentry-project.model";
 import { ISentryProject } from "../../database/interfaces/sentry/sentry-project.interface";
 import { IPaginationResponse } from "../../utils/interfaces/response/response.interface";
 import { IPaginationRequest } from "../../utils/interfaces/request/pagination-request.interface";
-import { Op } from "sequelize";
+import { Repository } from "typeorm";
+import { SentryProjectEntity } from "../../database/entities/sentry/sentry-project.entity";
 
 export class SentryProjectRepository {
+    constructor(
+        private readonly SentryProjectEntity: Repository<SentryProjectEntity>,
+    ) {}
+
     public async paginate(request: IPaginationRequest<null>): Promise<IPaginationResponse<ISentryProject>> {
         const { 
             page, 
@@ -16,53 +20,46 @@ export class SentryProjectRepository {
         } = request;
 
         const offset = (page - 1) * perPage;
-        const where = {};
+
+        const query = this.SentryProjectEntity.createQueryBuilder(SentryProjectEntity.name);
 
         if (search) {
-            Object.assign(where, {
-                sentryProjectName: {
-                    [Op.like]: `%${search}%`,
-                },
-            });
+            query.where("sentryProjectName LIKE :search", { search: `%${search}%` });
         }
 
         if (filters) {
-            Object.assign(where, filters);
+            Object.keys(filters).forEach((key) => {
+                query.andWhere(`${key} = :${key}`, { [key]: filters[key] });
+            });
         }
 
-        const { count, rows } = await SentryProjectModel.findAndCountAll({
-            where,
-            limit: perPage,
-            offset,
-            order: [[sort, order]],
-        });
+        const [items, total] = await query
+            .orderBy(sort, order)
+            .skip(offset)
+            .take(perPage)
+            .getManyAndCount();
 
         return {
-            items: rows,
+            items,
             meta: {
                 page,
                 perPage,
-                total: count,
-                totalPages: Math.ceil(count / perPage),
+                total,
+                totalPages: Math.ceil(total / perPage),
             },
         };
     }
 
     public async findAll(): Promise<ISentryProject[]> {
-        return await SentryProjectModel.findAll();
+        return await this.SentryProjectEntity.find();
     }
 
     public async create(data: ISentryProject): Promise<ISentryProject> {
-        return await SentryProjectModel.create({
-            sentryTeamId: data.sentryTeamId,
-            sentryProjectId: data.sentryProjectId,
-            sentryProjectName: data.sentryProjectName,
-            sentryProjectSlug: data.sentryProjectSlug,
-        });
+        return await this.SentryProjectEntity.save(data);
     }
 
     public async bulkCreate(datas: ISentryProject[]): Promise<ISentryProject[]> {
-        return await SentryProjectModel.bulkCreate(datas.map((data) => {
+        return await this.SentryProjectEntity.save(datas.map((data) => {
             return {
                 sentryTeamId: data.sentryTeamId,
                 sentryProjectId: data.sentryProjectId,
@@ -74,13 +71,18 @@ export class SentryProjectRepository {
 
     public async bulkUpdate(datas: ISentryProject[]): Promise<ISentryProject[]> {
         return await Promise.all(datas.map(async (data) => {
-            const project = await SentryProjectModel.findByPk(data.id);
+            const project = await this.SentryProjectEntity.findOne({
+                where: {
+                    id: data.id,
+                },
+            });
 
             if (!project) {
                 throw new Error(`Project with id ${data.id} not found`);
             }
 
-            return await project.update({
+            return await this.SentryProjectEntity.save({
+                ...project,
                 sentryTeamId: data.sentryTeamId,
                 sentryProjectId: data.sentryProjectId,
                 sentryProjectName: data.sentryProjectName,

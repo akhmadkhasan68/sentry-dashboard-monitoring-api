@@ -14,6 +14,11 @@ import { SentryOrganizationUserRepository } from "./repositories/sentry/sentry-o
 import { SentryOrganizationUserScheduler } from "./scheduler/sentry-organization-user.scheduler";
 import { SentryOrganizationUserService } from "./services/sentry/sentry-organization-user.service";
 import { SentryApiOrganizationProjectRepository } from "./repositories/integrations/sentry-api/sentry-api-organization-project.repository";
+import { ProjectEntity } from "./database/entities/project.entity";
+import { AppDataSource } from "./database/config";
+import { SentryProjectEntity } from "./database/entities/sentry/sentry-project.entity";
+import { SentryTeamEntity } from "./database/entities/sentry/sentry-team.entity";
+import { SentryOrganizationUserEntity } from "./database/entities/sentry/sentry-organization-user.entity";
 
 
 export default function configureDI() {
@@ -29,10 +34,18 @@ export default function configureDI() {
         [SentryApiOrganizationProjectRepository.name]: new SentryApiOrganizationProjectRepository,
 
         /** Repositories */
-        [SentryProjectRepository.name]: new SentryProjectRepository,
-        [SentryTeamRepository.name]: new SentryTeamRepository,
-        [ProjectRepository.name]: new ProjectRepository,
-        [SentryOrganizationUserRepository.name]: new SentryOrganizationUserRepository,
+        [SentryProjectRepository.name]: object(SentryProjectRepository).construct(
+            AppDataSource.getRepository(SentryProjectEntity),
+        ),
+        [SentryTeamRepository.name]: object(SentryTeamRepository).construct(
+            AppDataSource.getRepository(SentryTeamEntity),
+        ),
+        [ProjectRepository.name]: object(ProjectRepository).construct(
+            AppDataSource.getRepository(ProjectEntity),
+        ),
+        [SentryOrganizationUserRepository.name]: object(SentryOrganizationUserRepository).construct(
+            AppDataSource.getRepository(SentryOrganizationUserEntity),
+        ),
 
         /** Services */
         [SentryProjectService.name]: object(SentryProjectService).construct(
