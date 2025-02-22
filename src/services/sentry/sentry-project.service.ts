@@ -2,6 +2,10 @@ import { SentryApiProjectRepository } from "../../repositories/integrations/sent
 import { LoggerHelper } from "../../infrastructure/logger/logger";
 import { SentryProjectRepository } from "../../repositories/sentry/sentry-project.repository";
 import { ISentryProject } from "../../database/interfaces/sentry/sentry-project.interface";
+import { IPaginationResponse } from "../../utils/interfaces/response/response.interface";
+import { Request } from "express";
+import { IPaginationRequest } from "../../utils/interfaces/request/pagination-request.interface";
+import { PaginateOrderEnum } from "../../utils/enums/paginate-order.enum";
 
 export class SentryProjectService {
     private readonly logger: LoggerHelper;
@@ -11,6 +15,27 @@ export class SentryProjectService {
         private readonly sentryApiProjectRepository: SentryApiProjectRepository,
     ) {
         this.logger = new LoggerHelper(SentryProjectService.name);
+    }
+
+    public async index(req: Request): Promise<IPaginationResponse<ISentryProject>> {
+        try {
+            const request: IPaginationRequest<null> = {
+                page: Number(req.query.page) || 1,
+                perPage: Number(req.query.perPage) || 10,
+                search: req.query.search as string,
+                sort: req.query.sort as string || "createdAt",
+                order: req.query.order as PaginateOrderEnum || PaginateOrderEnum.DESC,
+                filters: null,
+            }
+
+            const sentryProjects = await this.sentryProjectRepository.paginate(request);
+
+            return sentryProjects;
+        } catch (error) {
+            this.logger.setLogger.error(`Error when get sentry project: ${error.message}`);
+
+            throw error;
+        }
     }
 
     public async syncSentryProjectToInternalDatabase(): Promise<void> {
