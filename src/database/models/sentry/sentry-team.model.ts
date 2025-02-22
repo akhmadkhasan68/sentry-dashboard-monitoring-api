@@ -1,6 +1,8 @@
-import { Column, DataType, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Table } from "sequelize-typescript";
 import { BaseModel } from "../base.model";
 import { ISentryTeam } from "../../interfaces/sentry/sentry-team.interface";
+import { ISentryProject } from "../../interfaces/sentry/sentry-project.interface";
+import { SentryProjectModel } from "./sentry-project.model";
 
 @Table({
     timestamps: true,
@@ -36,4 +38,11 @@ export class SentryTeamModel extends BaseModel implements ISentryTeam {
         allowNull: false,
     })
     sentryMemberCount: number;
+
+    /* Relations */
+    // @HasMany(() => SentryProjectModel, {
+    //     foreignKey: "sentryTeamId",
+    //     as: "projects",
+    // })
+    // sentryProjects?: ISentryProject[];
 }

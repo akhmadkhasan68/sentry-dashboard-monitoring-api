@@ -13,7 +13,7 @@ export class SentryTeamSyncScheduler implements IScheduler {
         this.logger = new LoggerHelper(SentryTeamSyncScheduler.name);
     }
 
-    public initScheduler(): void {
+    public async initScheduler(): Promise<void> {
         this.logger.setLogger.info('init sentry team sync scheduler... 🚀');
         try {
             return new CronJob(CronExpressionConstant.EVERY_1_MINUTE, async () => {

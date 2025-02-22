@@ -3,13 +3,13 @@ import { SentryOrganizationUserList } from "./dtos/sentry-organization-user/sent
 import { SentryAPIBaseRepository } from "./sentry-api-base.repository";
 
 export class SentryApiOrganizationUserRepository extends SentryAPIBaseRepository {
+    private organizationSlug = SentryOrganizationConstant.DEFAULT;
+
     constructor() {
         super();
     }
 
     async fetchOrganizationUsers(): Promise<SentryOrganizationUserList[]> {
-        const organizationSlug = SentryOrganizationConstant.DEFAULT;
-
-        return await this.axiosFetcher.get(`0/organizations/${organizationSlug}/users/`);
+        return await this.axiosFetcher.get(`0/organizations/${this.organizationSlug}/users/`);
     }
 }

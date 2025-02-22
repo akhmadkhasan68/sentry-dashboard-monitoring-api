@@ -6,6 +6,9 @@ import { IPaginationResponse } from "../../utils/interfaces/response/response.in
 import { Request } from "express";
 import { IPaginationRequest } from "../../utils/interfaces/request/pagination-request.interface";
 import { PaginateOrderEnum } from "../../utils/enums/paginate-order.enum";
+import { SentryApiTeamRepository } from "../../repositories/integrations/sentry-api/sentry-api-team.repository";
+import { SentryTeamRepository } from "../../repositories/sentry/sentry-team.repository";
+import { SentryApiOrganizationProjectRepository } from "../../repositories/integrations/sentry-api/sentry-api-organization-project.repository";
 
 export class SentryProjectService {
     private readonly logger: LoggerHelper;
@@ -13,6 +16,9 @@ export class SentryProjectService {
     constructor(
         private readonly sentryProjectRepository: SentryProjectRepository,
         private readonly sentryApiProjectRepository: SentryApiProjectRepository,
+        private readonly sentryApiOrganizationProjectRepository: SentryApiOrganizationProjectRepository,
+        private readonly sentryTeamRepository: SentryTeamRepository,
+        private readonly sentryApiTeamRepository: SentryApiTeamRepository,
     ) {
         this.logger = new LoggerHelper(SentryProjectService.name);
     }
@@ -40,17 +46,34 @@ export class SentryProjectService {
 
     public async syncSentryProjectToInternalDatabase(): Promise<void> {
         try {
-            // Fetch data from Sentry API
-            const sentryProjects = await this.sentryApiProjectRepository.fetchProjects();
+            // Fetch data from Sentry API & Database
+            const [
+                sentryApiProjects,
+                sentryDbTeams,
+            ] = await Promise.all([
+                this.sentryApiOrganizationProjectRepository.fetchOrganizationProjects(),
+                this.sentryTeamRepository.findAll(),
+            ]);
+
+            if (!sentryApiProjects.length || !sentryDbTeams.length) {
+                return;
+            }
 
             // Map data to internal database
-            const mappedSentryProjects = sentryProjects.map((project): ISentryProject => {
+            const mappedSentryProjects = sentryApiProjects.map((project): ISentryProject => {
+                const sentryDbTeam = sentryDbTeams.find((team) => team.sentryTeamId === project.team.id);
+
+                if (!sentryDbTeam) {
+                    return null;
+                }
+
                 return {
+                    sentryTeamId: sentryDbTeam.id,
                     sentryProjectName: project.name,
                     sentryProjectId: project.id,
                     sentryProjectSlug: project.slug,
                 };
-            });
+            }).filter((project) => project !== null);
 
             // Get Existing Sentry Projects from internal database
             const existingSentryProjects = await this.sentryProjectRepository.findAll();
@@ -61,16 +84,23 @@ export class SentryProjectService {
             });
 
             // create object updated data
-            const updatedData = mappedSentryProjects.filter((project) => {
-                return existingSentryProjects.some((existingProject) => existingProject.sentryProjectId === project.sentryProjectId);
-            }).map((project) : ISentryProject => {
+            const updatedData = sentryApiProjects.filter((project) => {
+                return existingSentryProjects.some((existingProject) => existingProject.sentryProjectId === project.id);
+            }).map((project) => {
+                const sentryDbTeam = sentryDbTeams.find((team) => team.sentryTeamId === project.team.id);
+
+                if (!sentryDbTeam) {
+                    return null;
+                }
+
                 return {
-                    id: existingSentryProjects.find((existingProject) => existingProject.sentryProjectId === project.sentryProjectId).id,
-                    sentryProjectId: project.sentryProjectId,
-                    sentryProjectName: project.sentryProjectName,
-                    sentryProjectSlug: project.sentryProjectSlug,
+                    id: existingSentryProjects.find((existingProject) => existingProject.sentryProjectId === project.id).id,
+                    sentryTeamId: sentryDbTeam.id,
+                    sentryProjectName: project.name,
+                    sentryProjectId: project.id,
+                    sentryProjectSlug: project.slug,
                 };
-            });
+            }).filter((project) => project !== null);
 
             // Save data to internal database
             await Promise.all([

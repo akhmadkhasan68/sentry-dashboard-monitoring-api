@@ -13,6 +13,12 @@ const connection = new Sequelize({
   password: config.database.password,
   database: config.database.name,
   logging: false,
+  pool: { // TODO: add to config
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
   models: [
     ProjectModel,
     SentryProjectModel,

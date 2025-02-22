@@ -54,6 +54,7 @@ export class SentryProjectRepository {
 
     public async create(data: ISentryProject): Promise<ISentryProject> {
         return await SentryProjectModel.create({
+            sentryTeamId: data.sentryTeamId,
             sentryProjectId: data.sentryProjectId,
             sentryProjectName: data.sentryProjectName,
             sentryProjectSlug: data.sentryProjectSlug,
@@ -63,6 +64,7 @@ export class SentryProjectRepository {
     public async bulkCreate(datas: ISentryProject[]): Promise<ISentryProject[]> {
         return await SentryProjectModel.bulkCreate(datas.map((data) => {
             return {
+                sentryTeamId: data.sentryTeamId,
                 sentryProjectId: data.sentryProjectId,
                 sentryProjectName: data.sentryProjectName,
                 sentryProjectSlug: data.sentryProjectSlug,
@@ -79,6 +81,7 @@ export class SentryProjectRepository {
             }
 
             return await project.update({
+                sentryTeamId: data.sentryTeamId,
                 sentryProjectId: data.sentryProjectId,
                 sentryProjectName: data.sentryProjectName,
                 sentryProjectSlug: data.sentryProjectSlug,

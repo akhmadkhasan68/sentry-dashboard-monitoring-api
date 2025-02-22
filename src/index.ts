@@ -4,10 +4,8 @@ import configureRouter from './routes/index.routes';
 import configureDI from './app.module';
 import bodyParser from 'body-parser';
 import connection from './database/config';
-import { SentryProjectSyncScheduler } from './scheduler/sentry-project-sync.scheduler';
 import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
 import { LoggerHelper } from './infrastructure/logger/logger';
-import { SentryTeamSyncScheduler } from './scheduler/sentry-team-sync.scheduler';
 import { SchedulerService } from './scheduler.service';
 
 //init Express APP
@@ -22,14 +20,11 @@ app.use(loggingMiddleware);
 const logger = new LoggerHelper('App');
 
 //init database
-connection.sync({ alter: true })
-.then(() => {
+connection.authenticate().then(() => {
   logger.setLogger.info('Database connected successfully... 🚀');
-})
-.catch((err) => {
+}
+).catch((err) => {
   logger.setLogger.error(`Error when connect to database: ${err.message}`);
-
-  process.exit(1);
 });
 
 //init modules & routes

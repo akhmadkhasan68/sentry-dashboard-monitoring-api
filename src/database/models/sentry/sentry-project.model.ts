@@ -1,12 +1,20 @@
-import { Column, DataType, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, Table } from "sequelize-typescript";
 import { BaseModel } from "../base.model";
 import { ISentryProject } from "../../interfaces/sentry/sentry-project.interface";
+import { ISentryTeam } from "../../interfaces/sentry/sentry-team.interface";
+import { SentryTeamModel } from "./sentry-team.model";
 
 @Table({
     timestamps: true,
     tableName: "sentry_projects",
 })
 export class SentryProjectModel extends BaseModel implements ISentryProject {
+    @Column({
+        type: DataType.UUID,
+        allowNull: false,
+    })
+    sentryTeamId: string;
+
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -24,4 +32,12 @@ export class SentryProjectModel extends BaseModel implements ISentryProject {
         allowNull: false,
     })
     sentryProjectSlug: string;
+
+    /* Relations */
+
+    @BelongsTo(() => SentryTeamModel, {
+        foreignKey: "sentryTeamId",
+        as: "team",
+    })
+    sentryTeam?: ISentryTeam;
 }

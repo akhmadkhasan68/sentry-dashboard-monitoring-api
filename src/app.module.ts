@@ -13,6 +13,7 @@ import { SentryApiOrganizationUserRepository } from "./repositories/integrations
 import { SentryOrganizationUserRepository } from "./repositories/sentry/sentry-organization-user.repository";
 import { SentryOrganizationUserScheduler } from "./scheduler/sentry-organization-user.scheduler";
 import { SentryOrganizationUserService } from "./services/sentry/sentry-organization-user.service";
+import { SentryApiOrganizationProjectRepository } from "./repositories/integrations/sentry-api/sentry-api-organization-project.repository";
 
 
 export default function configureDI() {
@@ -25,6 +26,7 @@ export default function configureDI() {
         [SentryApiProjectRepository.name]: new SentryApiProjectRepository,
         [SentryApiTeamRepository.name]: new SentryApiTeamRepository,
         [SentryApiOrganizationUserRepository.name]: new SentryApiOrganizationUserRepository,
+        [SentryApiOrganizationProjectRepository.name]: new SentryApiOrganizationProjectRepository,
 
         /** Repositories */
         [SentryProjectRepository.name]: new SentryProjectRepository,
@@ -36,6 +38,9 @@ export default function configureDI() {
         [SentryProjectService.name]: object(SentryProjectService).construct(
             use(SentryProjectRepository),
             use(SentryApiProjectRepository),
+            use(SentryApiOrganizationProjectRepository),
+            use(SentryTeamRepository),
+            use(SentryApiTeamRepository),
         ),
         [SentryTeamService.name]: object(SentryTeamService).construct(
             use(SentryTeamRepository),

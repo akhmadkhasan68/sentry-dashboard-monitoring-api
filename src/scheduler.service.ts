@@ -12,9 +12,9 @@ export class SchedulerService {
         this.diContainer = diContainer;
     }
 
-    public start() {
-        this.diContainer.get<SentryProjectSyncScheduler>(SentryProjectSyncScheduler.name).initScheduler();
-        this.diContainer.get<SentryTeamSyncScheduler>(SentryTeamSyncScheduler.name).initScheduler();
-        this.diContainer.get<SentryOrganizationUserScheduler>(SentryOrganizationUserScheduler.name).initScheduler();
+    public async start() {
+        await this.diContainer.get<SentryTeamSyncScheduler>(SentryTeamSyncScheduler.name).initScheduler();
+        // this.diContainer.get<SentryOrganizationUserScheduler>(SentryOrganizationUserScheduler.name).initScheduler();
+        await this.diContainer.get<SentryProjectSyncScheduler>(SentryProjectSyncScheduler.name).initScheduler();
     }
 }

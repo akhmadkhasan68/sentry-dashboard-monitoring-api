@@ -1,4 +1,5 @@
 import { IBase } from "../base.interface";
+import { ISentryProject } from "./sentry-project.interface";
 
 export interface ISentryTeam extends IBase {
     projectId?: string;
@@ -6,4 +7,7 @@ export interface ISentryTeam extends IBase {
     sentryTeamSlug: string;
     sentryTeamName: string;
     sentryMemberCount: number;
+
+    /* Relations */
+    sentryProjects?: ISentryProject[];
 }
