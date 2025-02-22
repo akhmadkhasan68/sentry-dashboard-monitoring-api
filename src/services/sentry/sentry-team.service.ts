@@ -30,12 +30,30 @@ export class SentryTeamService {
 
             // Get Existing Sentry Teams from internal database
             const existingSentryTeams = await this.sentryTeamRepository.findAll();
+
+            // Create object new data
             const newData = mappedSentryTeam.filter((team) => {
                 return !existingSentryTeams.some((existingTeam) => existingTeam.sentryTeamId === team.sentryTeamId);
             });
 
+            // Create object updated data
+            const updatedData = mappedSentryTeam.filter((team) => {
+                return existingSentryTeams.some((existingTeam) => existingTeam.sentryTeamId === team.sentryTeamId);
+            }).map((team): ISentryTeam => {
+                return {
+                    id: existingSentryTeams.find((existingTeam) => existingTeam.sentryTeamId === team.sentryTeamId).id,
+                    sentryTeamId: team.sentryTeamId,
+                    sentryTeamName: team.sentryTeamName,
+                    sentryTeamSlug: team.sentryTeamSlug,
+                    sentryMemberCount: team.sentryMemberCount,
+                };
+            });
+
             // Save data to internal database
-            await this.sentryTeamRepository.bulkCreate(newData);
+            await Promise.all([
+                this.sentryTeamRepository.bulkCreate(newData),
+                this.sentryTeamRepository.bulkUpdate(updatedData),
+            ]);
         } catch (error) {
             this.logger.setLogger.error(`Error when sync sentry team to internal database: ${error.message}`);
 

@@ -2,8 +2,9 @@ import { CronJob } from "cron";
 import { SentryProjectService } from "../services/sentry/sentry-project.service";
 import { CronExpressionConstant } from "../utils/constants/cron-expression.constant";
 import { LoggerHelper } from "../infrastructure/logger/logger";
+import { IScheduler } from "./scheduler.interface";
 
-export class SentryProjectSyncScheduler {
+export class SentryProjectSyncScheduler implements IScheduler {
     private readonly logger: LoggerHelper;
 
     constructor(

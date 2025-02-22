@@ -1,26 +1,41 @@
-export class SuccessResponse {
-    message: string;
+export interface IResponseBase<T> {
     code: number;
-    data: any | any[];
-
-    static setSuccessRespose(message: string, code: number, data: any | any[]): SuccessResponse {
-        return {
-            message: message,
-            code: code,
-            data: data
-        };
-    }
+    message: string;
+    data?: T;
+}
+export interface IResponsePaginationMetaData {
+    page: number;
+    perPage: number;
+    total: number;
+    totalPages: number;
 }
 
-export class ErrorResponse {
-    message: string;
+export interface IResponsePagination<T> {
+    items: T[];
+    meta: IResponsePaginationMetaData;
+}
 
-    code: number;
-
-    static setErrorRespose(message: string, code: number, data: any | any[]): ErrorResponse {
+export class ResponseHelper {
+    static successResponse<T>(message: string, code: number, data?: T): IResponseBase<T> {
         return {
-            message: message,
             code: code,
+            message: message,
+            data: data,
+        };
+    }
+
+    static errorResponse<T>(message: string, code: number): IResponseBase<T> {
+        return {
+            code: code,
+            message: message,
+        };
+    }
+
+    static paginationResponse<T>(message: string, code: number, data: IResponsePagination<T>): IResponseBase<IResponsePagination<T>> {
+        return {
+            code: code,
+            message: message,
+            data: data,
         };
     }
 }

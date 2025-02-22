@@ -25,4 +25,21 @@ export class SentryTeamRepository {
             };
         }));
     }
+
+    public async bulkUpdate(datas: ISentryTeam[]): Promise<ISentryTeam[]> {
+        return await Promise.all(datas.map(async (data) => {
+            const team = await SentryTeamModel.findByPk(data.id);
+
+            if (!team) {
+                throw new Error(`Team with id ${data.id} not found`);
+            }
+
+            return await team.update({
+                sentryTeamId: data.sentryTeamId,
+                sentryTeamSlug: data.sentryTeamSlug,
+                sentryTeamName: data.sentryTeamName,
+                sentryMemberCount: data.sentryMemberCount,
+            });
+        }));
+    }
 }

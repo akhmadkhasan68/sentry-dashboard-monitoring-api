@@ -29,12 +29,29 @@ export class SentryProjectService {
 
             // Get Existing Sentry Projects from internal database
             const existingSentryProjects = await this.sentryProjectRepository.findAll();
+            
+            // create object new data
             const newData = mappedSentryProjects.filter((project) => {
                 return !existingSentryProjects.some((existingProject) => existingProject.sentryProjectId === project.sentryProjectId);
             });
 
+            // create object updated data
+            const updatedData = mappedSentryProjects.filter((project) => {
+                return existingSentryProjects.some((existingProject) => existingProject.sentryProjectId === project.sentryProjectId);
+            }).map((project) : ISentryProject => {
+                return {
+                    id: existingSentryProjects.find((existingProject) => existingProject.sentryProjectId === project.sentryProjectId).id,
+                    sentryProjectId: project.sentryProjectId,
+                    sentryProjectName: project.sentryProjectName,
+                    sentryProjectSlug: project.sentryProjectSlug,
+                };
+            });
+
             // Save data to internal database
-            await this.sentryProjectRepository.bulkCreate(newData);
+            await Promise.all([
+                this.sentryProjectRepository.bulkCreate(newData),
+                this.sentryProjectRepository.bulkUpdate(updatedData),
+            ]);
         } catch (error) {
             this.logger.setLogger.error(`Error when sync sentry project to internal database: ${error.message}`);
 

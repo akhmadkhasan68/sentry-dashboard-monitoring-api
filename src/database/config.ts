@@ -4,6 +4,7 @@ import { Dialect } from "sequelize";
 import { ProjectModel } from "./models/project.model";
 import { SentryProjectModel } from "./models/sentry/sentry-project.model";
 import { SentryTeamModel } from "./models/sentry/sentry-team.model";
+import { SentryOrganizationUserModel } from "./models/sentry/sentry-organization-user.model";
 
 const connection = new Sequelize({
   dialect: config.database.dialect as Dialect,
@@ -17,6 +18,7 @@ const connection = new Sequelize({
     SentryProjectModel,
     SentryTeamModel,
     SentryTeamModel,
+    SentryOrganizationUserModel,
   ],
 });
 

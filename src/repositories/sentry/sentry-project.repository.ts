@@ -23,4 +23,20 @@ export class SentryProjectRepository {
             };
         }));
     }
+
+    public async bulkUpdate(datas: ISentryProject[]): Promise<ISentryProject[]> {
+        return await Promise.all(datas.map(async (data) => {
+            const project = await SentryProjectModel.findByPk(data.id);
+
+            if (!project) {
+                throw new Error(`Project with id ${data.id} not found`);
+            }
+
+            return await project.update({
+                sentryProjectId: data.sentryProjectId,
+                sentryProjectName: data.sentryProjectName,
+                sentryProjectSlug: data.sentryProjectSlug,
+            });
+        }));
+    }
 }
