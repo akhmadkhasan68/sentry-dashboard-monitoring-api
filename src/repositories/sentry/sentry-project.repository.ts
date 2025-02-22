@@ -2,7 +2,6 @@ import { SentryProjectModel } from "../../database/models/sentry/sentry-project.
 import { ISentryProject } from "../../database/interfaces/sentry/sentry-project.interface";
 import { IPaginationResponse } from "../../utils/interfaces/response/response.interface";
 import { IPaginationRequest } from "../../utils/interfaces/request/pagination-request.interface";
-import { PaginateOrderEnum } from "../../utils/enums/paginate-order.enum";
 import { Op } from "sequelize";
 
 export class SentryProjectRepository {
