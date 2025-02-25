@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
-import { ISentryTeam } from "../../database/interfaces/sentry/sentry-team.interface";
-import { SentryTeamEntity } from "../../database/entities/sentry/sentry-team.entity";
+import { ISentryTeam } from "@database/interfaces/sentry/sentry-team.interface";
+import { SentryTeamEntity } from "@database/entities/sentry/sentry-team.entity";
 
 export class SentryTeamRepository {
     constructor(

@@ -1,7 +1,7 @@
-import { LoggerHelper } from "../../infrastructure/logger/logger";
-import { ISentryTeam } from "../../database/interfaces/sentry/sentry-team.interface";
-import { SentryApiTeamRepository } from "../../repositories/integrations/sentry-api/sentry-api-team.repository";
-import { SentryTeamRepository } from "../../repositories/sentry/sentry-team.repository";
+import { LoggerHelper } from "@infrastructure/logger/logger";
+import { ISentryTeam } from "@database/interfaces/sentry/sentry-team.interface";
+import { SentryApiTeamRepository } from "@repositories/integrations/sentry-api/sentry-api-team.repository";
+import { SentryTeamRepository } from "@repositories/sentry/sentry-team.repository";
 
 export class SentryTeamService {
     private readonly logger: LoggerHelper;

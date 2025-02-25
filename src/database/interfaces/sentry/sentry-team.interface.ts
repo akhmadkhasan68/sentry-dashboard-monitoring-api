@@ -1,6 +1,6 @@
-import { IBase } from "../base.interface";
-import { IProject } from "../project.interface";
-import { ISentryProject } from "./sentry-project.interface";
+import { IBase } from "@database/interfaces/base.interface";
+import { IProject } from "@database/interfaces/project.interface";
+import { ISentryProject } from "@database/interfaces/sentry/sentry-project.interface";
 
 export interface ISentryTeam extends IBase {
     projectId?: string;

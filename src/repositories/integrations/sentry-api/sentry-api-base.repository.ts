@@ -1,5 +1,5 @@
-import { config } from "../../../config/config";
-import { AxiosFetcherHelper } from "../../../infrastructure/helpers/axios-fetcher.helper";
+import { config } from "@config/config";
+import { AxiosFetcherHelper } from "@infrastructure/helpers/axios-fetcher.helper";
 import { SentryOrganizationConstant } from "./constants/sentry-organization.constant";
 
 export class SentryAPIBaseRepository {

@@ -7,9 +7,10 @@ import { SentryOrganizationUserEntity } from "./entities/sentry/sentry-organizat
 import { Init1740246833021 } from "./migrations/1740246833021-init";
 import { AlterSentryTeamTable1740249799526 } from "./migrations/1740249799526-alter-sentry-team-table";
 import { AlterTableSentryProjectAddColumn1740455447705 } from "./migrations/1740455447705-AlterTableSentryProjectAddColumn";
-import { SentryTeamProjectStatistic } from "./entities/sentry/sentry-team-project-statistic.entity";
+import { SentryTeamProjectStatisticEntity } from "./entities/sentry/sentry-team-project-statistic.entity";
 import { CreateSentryTeamProjectStatisticTable1740472971372 } from "./migrations/1740472971372-CreateSentryTeamProjectStatisticTable";
 import { AlterSentryTeamProjectStatisticTable1740473098448 } from "./migrations/1740473098448-AlterSentryTeamProjectStatisticTable";
+import { AlterSentryTeamProjectStatisticTable1740474669573 } from "./migrations/1740474669573-AlterSentryTeamProjectStatisticTable";
 
 export default new DataSource({
   type: 'mysql',
@@ -23,7 +24,7 @@ export default new DataSource({
     SentryTeamEntity,
     SentryProjectEntity,
     SentryOrganizationUserEntity,
-    SentryTeamProjectStatistic,
+    SentryTeamProjectStatisticEntity,
   ],
   migrations: [
     Init1740246833021,
@@ -31,6 +32,7 @@ export default new DataSource({
     AlterTableSentryProjectAddColumn1740455447705,
     CreateSentryTeamProjectStatisticTable1740472971372,
     AlterSentryTeamProjectStatisticTable1740473098448,
+    AlterSentryTeamProjectStatisticTable1740474669573
   ],
   synchronize: false,
 });

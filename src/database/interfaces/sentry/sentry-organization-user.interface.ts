@@ -1,4 +1,4 @@
-import { IBase } from "../base.interface";
+import { IBase } from "@database/interfaces/base.interface";
 
 export interface ISentryOrganizationUser extends IBase {
     sentryUserId: string;

@@ -1,8 +1,8 @@
 import express from 'express';
 import DIContainer, { IDIContainer } from "rsdi";
 import * as core from 'express-serve-static-core';
-import { SentryProjectController } from '../controllers/sentry/sentry-project.controller';
-import { SentryStatisticController } from '../controllers/sentry/sentry-statistic.controller';
+import { SentryProjectController } from '@controllers/sentry/sentry-project.controller';
+import { SentryStatisticController } from '@controllers/sentry/sentry-statistic.controller';
 
 export default function configureRouter(app: core.Express, diContainer: DIContainer<{[key: string]: any;}>) {
     /** Health Check Endpoint */

@@ -1,6 +1,6 @@
 import { LoggerHelper } from "../../infrastructure/logger/logger";
-import { SentryOrganizationUserRepository } from "../../repositories/sentry/sentry-organization-user.repository";
-import { SentryApiOrganizationUserRepository } from "../../repositories/integrations/sentry-api/sentry-api-organization-user.repository";
+import { SentryOrganizationUserRepository } from "@repositories/sentry/sentry-organization-user.repository";
+import { SentryApiOrganizationUserRepository } from "@repositories/integrations/sentry-api/sentry-api-organization-user.repository";
 import { ISentryOrganizationUser } from "../../database/interfaces/sentry/sentry-organization-user.interface";
 
 export class SentryOrganizationUserService {

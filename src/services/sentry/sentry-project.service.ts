@@ -1,12 +1,12 @@
 import { LoggerHelper } from "../../infrastructure/logger/logger";
-import { SentryProjectRepository } from "../../repositories/sentry/sentry-project.repository";
+import { SentryProjectRepository } from "@repositories/sentry/sentry-project.repository";
 import { ISentryProject } from "../../database/interfaces/sentry/sentry-project.interface";
 import { IPaginationResponse } from "../../utils/interfaces/response/response.interface";
 import { Request } from "express";
 import { IPaginationRequest } from "../../utils/interfaces/request/pagination-request.interface";
 import { PaginateOrderEnum } from "../../utils/enums/paginate-order.enum";
-import { SentryTeamRepository } from "../../repositories/sentry/sentry-team.repository";
-import { SentryApiOrganizationProjectRepository } from "../../repositories/integrations/sentry-api/sentry-api-organization-project.repository";
+import { SentryTeamRepository } from "@repositories/sentry/sentry-team.repository";
+import { SentryApiOrganizationProjectRepository } from "@repositories/integrations/sentry-api/sentry-api-organization-project.repository";
 
 export class SentryProjectService {
     private readonly logger: LoggerHelper;

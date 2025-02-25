@@ -20,6 +20,9 @@ import { SentryTeamEntity } from "./database/entities/sentry/sentry-team.entity"
 import { SentryOrganizationUserEntity } from "./database/entities/sentry/sentry-organization-user.entity";
 import AppDataSource from "./database/datasource.config";
 import { SentryStatisticController } from "./controllers/sentry/sentry-statistic.controller";
+import { SentryTeamProjectStatisticRepository } from "./repositories/sentry/sentry-team-project-statistic.repository";
+import { SentryTeamProjectStatisticEntity } from "./database/entities/sentry/sentry-team-project-statistic.entity";
+import { SentryTeamProjectStatisticService } from "./services/sentry/sentry-team-project-statistic.service";
 
 
 export default function configureDI() {
@@ -47,6 +50,9 @@ export default function configureDI() {
         [SentryOrganizationUserRepository.name]: object(SentryOrganizationUserRepository).construct(
             AppDataSource.getRepository(SentryOrganizationUserEntity),
         ),
+        [SentryTeamProjectStatisticRepository.name]: object(SentryTeamProjectStatisticRepository).construct(
+            AppDataSource.getRepository(SentryTeamProjectStatisticEntity),
+        ),
 
         /** Services */
         [SentryProjectService.name]: object(SentryProjectService).construct(
@@ -61,6 +67,9 @@ export default function configureDI() {
         [SentryOrganizationUserService.name]: object(SentryOrganizationUserService).construct(
             use(SentryOrganizationUserRepository),
             use(SentryApiOrganizationUserRepository),
+        ),
+        [SentryTeamProjectStatisticService.name]: object(SentryTeamProjectStatisticService).construct(
+            use(SentryTeamProjectStatisticRepository),
         ),
 
         /** Controllers */

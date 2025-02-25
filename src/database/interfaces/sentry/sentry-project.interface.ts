@@ -1,5 +1,5 @@
-import { IBase } from "./../base.interface";
-import { ISentryTeam } from "./sentry-team.interface";
+import { IBase } from "@database/interfaces/base.interface";
+import { ISentryTeam } from "@database/interfaces/sentry/sentry-team.interface";
 
 export interface ISentryProject extends IBase {
     sentryTeamId: string;
