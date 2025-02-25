@@ -11,10 +11,14 @@ export class SentryApiTeamRepository extends SentryAPIBaseRepository {
     }
 
     async fetchOrganizationTeams(): Promise<SentryTeamListDto[]> {
-        return await this.axiosFetcher.get(`0/organizations/${this.organizationSlug}/teams/`);
+        const response = await this.axiosFetcher.get(`0/organizations/${this.organizationSlug}/teams/`);
+
+        return response.data;
     }
 
     async fetchTeamMembers(teamSlug: string): Promise<SentryOrganizationUserList[]> {
-        return await this.axiosFetcher.get(`0/teams/${this.organizationSlug}/${teamSlug}members/`);
+        const response = await this.axiosFetcher.get(`0/teams/${this.organizationSlug}/${teamSlug}members/`);
+
+        return response.data;
     }
 }

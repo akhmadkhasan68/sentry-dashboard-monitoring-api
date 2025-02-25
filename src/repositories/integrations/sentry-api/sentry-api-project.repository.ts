@@ -7,6 +7,8 @@ export class SentryApiProjectRepository extends SentryAPIBaseRepository {
     }
 
     async fetchProjects(): Promise<SentryProjectListDto[]> {
-        return await this.axiosFetcher.get('0/projects/');
+        const response = await this.axiosFetcher.get('0/projects/');
+
+        return response.data;
     }
 }

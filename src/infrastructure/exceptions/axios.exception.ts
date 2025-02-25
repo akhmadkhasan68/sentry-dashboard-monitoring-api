@@ -4,6 +4,6 @@ export class AxiosException extends Error {
         public readonly statusCode?: number
     ) {
         super(message);
-        this.name = 'AxiosException';
+        this.name = AxiosException.name;
     }
 }

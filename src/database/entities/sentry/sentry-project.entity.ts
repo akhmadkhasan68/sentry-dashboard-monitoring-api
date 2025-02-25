@@ -32,6 +32,12 @@ export class SentryProjectEntity extends BaseEntity implements ISentryProject {
     })
     sentryProjectSlug: string;
 
+    @Column({
+        type: "varchar",
+        nullable: true
+    })
+    sentryProjectPlatform?: string | null;
+
     /* Relations */
     @ManyToOne(() => SentryTeamEntity, (sentryTeam) => sentryTeam.sentryProjects)
     sentryTeam?: ISentryTeam;

@@ -6,6 +6,7 @@ import { SentryProjectEntity } from "./entities/sentry/sentry-project.entity";
 import { SentryOrganizationUserEntity } from "./entities/sentry/sentry-organization-user.entity";
 import { Init1740246833021 } from "./migrations/1740246833021-init";
 import { AlterSentryTeamTable1740249799526 } from "./migrations/1740249799526-alter-sentry-team-table";
+import { AlterTableSentryProjectAddColumn1740455447705 } from "./migrations/1740455447705-AlterTableSentryProjectAddColumn";
 
 export default new DataSource({
   type: 'mysql',
@@ -23,6 +24,7 @@ export default new DataSource({
   migrations: [
     Init1740246833021,
     AlterSentryTeamTable1740249799526,
+    AlterTableSentryProjectAddColumn1740455447705
   ],
   synchronize: false,
 });

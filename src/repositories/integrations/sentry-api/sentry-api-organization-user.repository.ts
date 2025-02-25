@@ -10,6 +10,8 @@ export class SentryApiOrganizationUserRepository extends SentryAPIBaseRepository
     }
 
     async fetchOrganizationUsers(): Promise<SentryOrganizationUserList[]> {
-        return await this.axiosFetcher.get(`0/organizations/${this.organizationSlug}/users/`);
+        const response = await this.axiosFetcher.get(`0/organizations/${this.organizationSlug}/users/`);
+        
+        return response.data;
     }
 }

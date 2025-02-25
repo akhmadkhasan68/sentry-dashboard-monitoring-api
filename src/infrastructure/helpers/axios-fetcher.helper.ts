@@ -13,7 +13,7 @@ export class AxiosFetcherHelper {
         });  
     }
 
-    async get<T = any>(endpoint: string, query: Record<string, any> = {}): Promise<T> {
+    async get<T = any>(endpoint: string, query: Record<string, any> = {}): Promise<AxiosResponse<T>> {
         try {
             const response: AxiosResponse<T> = await this.axios.get(
                 endpoint,
@@ -21,8 +21,10 @@ export class AxiosFetcherHelper {
                     params: query
                 }
             );
-            return response.data;
+
+            return response;
         } catch (error: any) {
+
             throw new AxiosException(error.message, error.response?.status);
         }
     }

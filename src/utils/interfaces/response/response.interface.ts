@@ -2,6 +2,7 @@ export interface IResponseBase<T> {
     code: number;
     message: string;
     data?: T;
+    error?: string | any;
 }
 export interface IPaginationResponseMetaData {
     page: number;

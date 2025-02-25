@@ -65,6 +65,7 @@ export class SentryProjectRepository {
                 sentryProjectId: data.sentryProjectId,
                 sentryProjectName: data.sentryProjectName,
                 sentryProjectSlug: data.sentryProjectSlug,
+                sentryProjectPlatform: data.sentryProjectPlatform
             };
         }));
     }
@@ -87,6 +88,7 @@ export class SentryProjectRepository {
                 sentryProjectId: data.sentryProjectId,
                 sentryProjectName: data.sentryProjectName,
                 sentryProjectSlug: data.sentryProjectSlug,
+                sentryProjectPlatform: data.sentryProjectPlatform
             });
         }));
     }

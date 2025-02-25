@@ -7,6 +7,7 @@ import { loggingMiddleware } from './infrastructure/middlewares/logging.middlewa
 import { LoggerHelper } from './infrastructure/logger/logger';
 import { SchedulerService } from './scheduler.service';
 import AppDataSource from "./database/datasource.config";
+import { errorHandlerMiddleware } from './infrastructure/middlewares/error-handler.middleware';
 
 //init Express APP
 const port = config.app.port;
@@ -23,9 +24,6 @@ const logger = new LoggerHelper('App');
 AppDataSource.initialize().then(() => {
   logger.setLogger.info('Database connection established... 🎉');
 }).catch((error) => {
-  console.log(error);
-  console.log(error.message);
-  console.log(error.stack);
   logger.setLogger.error(`Database connection failed: ${error}... 😢`)
 });
 
@@ -35,5 +33,8 @@ configureRouter(app, diContainer);
 
 //init scheduler
 new SchedulerService(diContainer).start();
+
+// Add Exception Handler Middleware
+app.use(errorHandlerMiddleware);
 
 app.listen(port, () => logger.setLogger.info(`Server is running on port ${port}... 🚀`));

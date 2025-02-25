@@ -1,4 +1,3 @@
-import { SentryApiProjectRepository } from "../../repositories/integrations/sentry-api/sentry-api-project.repository";
 import { LoggerHelper } from "../../infrastructure/logger/logger";
 import { SentryProjectRepository } from "../../repositories/sentry/sentry-project.repository";
 import { ISentryProject } from "../../database/interfaces/sentry/sentry-project.interface";
@@ -6,7 +5,6 @@ import { IPaginationResponse } from "../../utils/interfaces/response/response.in
 import { Request } from "express";
 import { IPaginationRequest } from "../../utils/interfaces/request/pagination-request.interface";
 import { PaginateOrderEnum } from "../../utils/enums/paginate-order.enum";
-import { SentryApiTeamRepository } from "../../repositories/integrations/sentry-api/sentry-api-team.repository";
 import { SentryTeamRepository } from "../../repositories/sentry/sentry-team.repository";
 import { SentryApiOrganizationProjectRepository } from "../../repositories/integrations/sentry-api/sentry-api-organization-project.repository";
 
@@ -15,10 +13,8 @@ export class SentryProjectService {
 
     constructor(
         private readonly sentryProjectRepository: SentryProjectRepository,
-        private readonly sentryApiProjectRepository: SentryApiProjectRepository,
         private readonly sentryApiOrganizationProjectRepository: SentryApiOrganizationProjectRepository,
         private readonly sentryTeamRepository: SentryTeamRepository,
-        private readonly sentryApiTeamRepository: SentryApiTeamRepository,
     ) {
         this.logger = new LoggerHelper(SentryProjectService.name);
     }
@@ -39,6 +35,46 @@ export class SentryProjectService {
             return sentryProjects;
         } catch (error) {
             this.logger.setLogger.error(`Error when get sentry project: ${error.message}`);
+
+            throw error;
+        }
+    }
+
+    public async getProjectUnresolvedIssues(): Promise<any> {
+        try {
+            const sentryTeams = await this.sentryTeamRepository.findAllWithRelations();
+
+            let results: any[] = [];
+
+            for (const sentryTeam of sentryTeams) {
+                const sentryTeamProjects = sentryTeam.sentryProjects;
+
+                if (!sentryTeamProjects) {
+                    continue;
+                }
+
+                // Get Project List Issues
+                let projectIssues: any[] = [];
+                for (const sentryTeamProject of sentryTeamProjects) {
+                    const issues = await this.sentryApiOrganizationProjectRepository.fetchOrganizationProjectUnresolvedIssues(sentryTeamProject.sentryProjectSlug);
+
+                    projectIssues.push({
+                        sentryProjectId: sentryTeamProject.sentryProjectId,
+                        sentryProjectName: sentryTeamProject.sentryProjectName,
+                        unresolvedIssuesCount: issues.length,
+                    })
+                }
+
+                results.push({
+                    sentryTeamId: sentryTeam.sentryTeamId,
+                    sentryTeamName: sentryTeam.sentryTeamName,
+                    sentryProjectsAndIssues: projectIssues,
+                });
+            }
+
+            return results;
+        } catch (error) {
+            this.logger.setLogger.error(`Error when get sentry project unresolved issues: ${error.message}`);
 
             throw error;
         }
@@ -72,6 +108,7 @@ export class SentryProjectService {
                     sentryProjectName: project.name,
                     sentryProjectId: project.id,
                     sentryProjectSlug: project.slug,
+                    sentryProjectPlatform: project.platform
                 };
             }).filter((project) => project !== null);
 
@@ -99,6 +136,7 @@ export class SentryProjectService {
                     sentryProjectName: project.name,
                     sentryProjectId: project.id,
                     sentryProjectSlug: project.slug,
+                    sentryProjectPlatform: project.platform
                 };
             }).filter((project) => project !== null);
 

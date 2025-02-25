@@ -1,3 +1,4 @@
+import { config } from "../config/config";
 import { IResponseBase, IPaginationResponse } from "./interfaces/response/response.interface";
 
 export class ResponseFormat {
@@ -9,10 +10,11 @@ export class ResponseFormat {
         };
     }
 
-    static errorResponse<T>(message: string, code: number): IResponseBase<T> {
+    static errorResponse<T>(message: string, code: number, errorStack: string): IResponseBase<T> {
         return {
             code: code,
             message: message,
+            error: config.app.env === "development" ? errorStack : undefined,
         };
     }
 

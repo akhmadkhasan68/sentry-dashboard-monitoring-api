@@ -6,6 +6,7 @@ export interface ISentryProject extends IBase {
     sentryProjectId: string;
     sentryProjectName: string;
     sentryProjectSlug: string;
+    sentryProjectPlatform?: string | null;
 
     /* Relations */
     sentryTeam?: ISentryTeam;

@@ -11,6 +11,12 @@ export class SentryTeamRepository {
         return await this.sentryTeamRepository.find();
     }
 
+    public async findAllWithRelations(): Promise<ISentryTeam[]> {
+        return await this.sentryTeamRepository.find({
+            relations: ["sentryProjects"]
+        })
+    }
+
     public async create(data: ISentryTeam): Promise<ISentryTeam> {
         return await this.sentryTeamRepository.save(data);
     }
