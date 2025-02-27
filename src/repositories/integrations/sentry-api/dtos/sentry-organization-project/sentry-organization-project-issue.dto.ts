@@ -89,6 +89,7 @@ export interface Project {
 
 export enum Status {
     Unresolved = "unresolved",
+    Resolved = "resolved"
 }
 
 export interface StatusDetails {

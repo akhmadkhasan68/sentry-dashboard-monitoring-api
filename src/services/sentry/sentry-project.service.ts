@@ -7,6 +7,7 @@ import { IPaginationRequest } from "../../utils/interfaces/request/pagination-re
 import { PaginateOrderEnum } from "../../utils/enums/paginate-order.enum";
 import { SentryTeamRepository } from "@repositories/sentry/sentry-team.repository";
 import { SentryApiOrganizationProjectRepository } from "@repositories/integrations/sentry-api/sentry-api-organization-project.repository";
+import { SentryProjectTypeEnum } from "@utils/enums/sentry-project-type.enum";
 
 export class SentryProjectService {
     private readonly logger: LoggerHelper;
@@ -108,7 +109,8 @@ export class SentryProjectService {
                     sentryProjectName: project.name,
                     sentryProjectId: project.id,
                     sentryProjectSlug: project.slug,
-                    sentryProjectPlatform: project.platform
+                    sentryProjectPlatform: project.platform ?? "",
+                    type: SentryProjectTypeEnum.OTHER,
                 };
             }).filter((project) => project !== null);
 
@@ -136,7 +138,8 @@ export class SentryProjectService {
                     sentryProjectName: project.name,
                     sentryProjectId: project.id,
                     sentryProjectSlug: project.slug,
-                    sentryProjectPlatform: project.platform
+                    sentryProjectPlatform: project.platform ?? "",
+                    type: existingSentryProjects.find((existingProject) => existingProject.sentryProjectId === project.id)?.type ?? SentryProjectTypeEnum.OTHER,
                 };
             }).filter((project) => project !== null);
 

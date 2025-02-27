@@ -4,15 +4,15 @@
   "description": "KPI Sentry Monitoring API",
   "main": "dist/index.js",
   "_moduleAliases": {
-    "@config/*": "dist/config",
-    "@controllers/*": "dist/controllers",
-    "@database/*": "dist/database",
-    "@infrastructure/*": "dist/infrastructure",
-    "@repositories/*": "dist/repositories",
-    "@routes/*": "dist/routes",
-    "@scheduler/*": "dist/scheduler",
-    "@services/*": "dist/services",
-    "@utils/*": "dist/utils"
+    "@config": "dist/config",
+    "@controllers": "dist/controllers",
+    "@database": "dist/database",
+    "@infrastructure": "dist/infrastructure",
+    "@repositories": "dist/repositories",
+    "@routes": "dist/routes",
+    "@scheduler": "dist/scheduler",
+    "@services": "dist/services",
+    "@utils": "dist/utils"
   },
   "scripts": {
     "build": "tsc",

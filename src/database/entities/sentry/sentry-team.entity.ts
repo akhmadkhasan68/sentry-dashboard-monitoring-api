@@ -1,21 +1,16 @@
 import { BaseEntity } from "../base.entity";
 import { ISentryTeam } from "../../interfaces/sentry/sentry-team.interface";
 import { ISentryProject } from "../../interfaces/sentry/sentry-project.interface";
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
-import { IProject } from "../../interfaces/project.interface";
+import { Column, Entity, OneToMany } from "typeorm";
 import { SentryProjectEntity } from "./sentry-project.entity";
-import { ProjectEntity } from "../project/project.entity";
+import { ProjectSentryTeamEntity } from "../project/project-sentry-team.entity";
+import { IProjectSentryTeam } from "@database/interfaces/project/project-sentry-team.interface";
 
 @Entity({
     name: "sentry_teams",
 })
 export class SentryTeamEntity extends BaseEntity implements ISentryTeam {
-    @Column({
-        type: "uuid",
-        nullable: true,
-    })
-    projectId: string;
-    
+
     @Column({
         type: "varchar",
         nullable: false,
@@ -42,9 +37,9 @@ export class SentryTeamEntity extends BaseEntity implements ISentryTeam {
     sentryMemberCount: number;
 
     /* Relations */
-    @ManyToOne(() => ProjectEntity, (project) => project.sentryTeams)
-    project?: IProject;
-
     @OneToMany(() => SentryProjectEntity, (sentryProject) => sentryProject.sentryTeam)
     sentryProjects?: ISentryProject[];
+
+    @OneToMany(() => ProjectSentryTeamEntity, (sentryTeam) => sentryTeam.sentryTeam)
+    projectSentryTeams?: IProjectSentryTeam[];
 }

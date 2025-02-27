@@ -1,8 +1,10 @@
 import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "../base.entity";
-import { IProject } from "../../interfaces/project.interface";
-import { SentryTeamEntity } from "../sentry/sentry-team.entity";
-import { ISentryTeam } from "../../interfaces/sentry/sentry-team.interface";
+import { IProject } from "../../interfaces/project/project.interface";
+import { IProjectMicroserviceService } from "@database/interfaces/project/project-microservice-service.interface";
+import { ProjectMicroserviceServiceEntity } from "./project-microservice-service.entity";
+import { IProjectSentryTeam } from "@database/interfaces/project/project-sentry-team.interface";
+import { ProjectSentryTeamEntity } from "./project-sentry-team.entity";
 
 @Entity({
     name: "projects",
@@ -21,7 +23,22 @@ export class ProjectEntity extends BaseEntity implements IProject {
     })
     description?: string;
 
+    @Column({
+        type: "boolean",
+        default: true,
+    })
+    isActive: boolean;
+
+    @Column({
+        type: "boolean",
+        default: false,
+    })
+    isMicroservices: boolean;
+
     /* Relations */
-    @OneToMany(() => SentryTeamEntity, (sentryTeam) => sentryTeam.project)
-    sentryTeams?: ISentryTeam[];
+    @OneToMany(() => ProjectMicroserviceServiceEntity, (projectMicroserviceService) => projectMicroserviceService.project)
+    projectMicroserviceServices?: IProjectMicroserviceService[];
+
+    @OneToMany(() => ProjectSentryTeamEntity, (sentryTeam) => sentryTeam.project)
+    projectSentryTeams?: IProjectSentryTeam[];
 }

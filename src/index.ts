@@ -1,14 +1,14 @@
 import 'module-alias/register';
 import express from 'express';
-import { config } from './config/config';
-import configureRouter from './routes/index.routes';
+import { config } from '@config/config';
+import configureRouter from '@routes/index.routes';
 import configureDI from './app.module';
 import bodyParser from 'body-parser';
-import { loggingMiddleware } from './infrastructure/middlewares/logging.middleware';
-import { LoggerHelper } from './infrastructure/logger/logger';
+import { loggingMiddleware } from '@infrastructure/middlewares/logging.middleware';
+import { LoggerHelper } from '@infrastructure/logger/logger';
 import { SchedulerService } from './scheduler.service';
-import AppDataSource from "./database/datasource.config";
-import { errorHandlerMiddleware } from './infrastructure/middlewares/error-handler.middleware';
+import AppDataSource from "@database/datasource.config";
+import { errorHandlerMiddleware } from '@infrastructure/middlewares/error-handler.middleware';
 
 //init Express APP
 const port = config.app.port;

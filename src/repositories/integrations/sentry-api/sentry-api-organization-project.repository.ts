@@ -18,7 +18,7 @@ export class SentryApiOrganizationProjectRepository extends SentryAPIBaseReposit
         return response.data;
     }
 
-    async fetchOrganizationProjectUnresolvedIssues(projectSlug: string): Promise<any[]> {
+    async fetchOrganizationProjectUnresolvedIssues(projectSlug: string, serverName?: string | null): Promise<SentryOrganizationProjectIssuesListDto[]> {
         let hasNextResult = true;
         let nextCursor = '';
         let results: SentryOrganizationProjectIssuesListDto[] = [];
@@ -32,6 +32,12 @@ export class SentryApiOrganizationProjectRepository extends SentryAPIBaseReposit
                 query: 'is:unresolved', // Filter for unresolved issues
                 cursor: nextCursor
             };
+
+            if (serverName) {
+                params.query += ` server_name:${serverName}`;
+            }
+
+            console.log(params);
 
             const response = await this.axiosFetcher.get<SentryOrganizationProjectIssuesListDto[]>(`0/projects/${this.organizationSlug}/${projectSlug}/issues/`, params);
 
