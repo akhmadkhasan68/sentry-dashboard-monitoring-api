@@ -12,7 +12,10 @@ export class ProjectSentrySummaryReportRepository {
             relations: [
                 "project",
                 "sentryProject",
-            ]
+            ],
+            order: {
+                projectId: "ASC",
+            }
         });
     }
 
