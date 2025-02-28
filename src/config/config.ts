@@ -1,3 +1,4 @@
+import { CronExpressionConstant } from '@utils/constants/cron-expression.constant';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -22,5 +23,15 @@ export const config = {
         password: process.env.DB_PASSWORD || '',
         name: process.env.DB_NAME || '',
         type: process.env.DB_TYPE || 'mysql'
+    },
+    scheduler: {
+        sentryOrganizationUserSyncEnabling: process.env.SCHEDULER_SENTRY_ORGANIZATION_USER_SYNC_ENABLING || 'true',
+        sentryOrganizationUserSyncCron: process.env.SCHEDULER_SENTRY_ORGANIZATION_USER_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
+
+        sentryProjectSyncEnabling: process.env.SCHEDULER_SENTRY_PROJECT_SYNC_ENABLING || 'true',
+        sentryProjectSyncCron: process.env.SCHEDULER_SENTRY_PROJECT_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
+        
+        sentryTeamSyncEnabling: process.env.SCHEDULER_SENTRY_TEAM_SYNC_ENABLING || 'true',
+        sentryTeamSyncCron: process.env.SCHEDULER_SENTRY_TEAM_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
     }
 };

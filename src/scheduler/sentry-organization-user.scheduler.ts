@@ -3,6 +3,7 @@ import { CronExpressionConstant } from "../utils/constants/cron-expression.const
 import { LoggerHelper } from "../infrastructure/logger/logger";
 import { SentryOrganizationUserService } from "../services/sentry/sentry-organization-user.service";
 import { IScheduler } from "./scheduler.interface";
+import { config } from "@config/config";
 
 export class SentryOrganizationUserScheduler implements IScheduler {
     private readonly logger: LoggerHelper;
@@ -14,9 +15,17 @@ export class SentryOrganizationUserScheduler implements IScheduler {
     }
 
     public initScheduler(): void {
+        const isEnabling = config.scheduler.sentryOrganizationUserSyncEnabling === 'true';
+        if (!isEnabling) {
+            this.logger.setLogger.info('sentry organization user sync scheduler is disabled... 🚀');
+            return;
+        }
+
+        const cronExpression = config.scheduler.sentryOrganizationUserSyncCron;
+
         this.logger.setLogger.info('init sentry organization user sync scheduler... 🚀');
         try {
-            return new CronJob(CronExpressionConstant.EVERY_1_MINUTE, async () => {
+            return new CronJob(cronExpression, async () => {
                 this.logger.setLogger.info('run sync sentry organization user... 🚀');
 
                 await this.sentryOrganizationUserService.syncSentryProjectToInternalDatabase();
