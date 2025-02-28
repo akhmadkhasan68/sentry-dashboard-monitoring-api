@@ -1,4 +1,3 @@
-import { CronExpressionConstant } from '@utils/constants/cron-expression.constant';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -26,15 +25,15 @@ export const config = {
     },
     scheduler: {
         sentryOrganizationUserSyncEnabling: process.env.SCHEDULER_SENTRY_ORGANIZATION_USER_SYNC_ENABLING || 'true',
-        sentryOrganizationUserSyncCron: process.env.SCHEDULER_SENTRY_ORGANIZATION_USER_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
+        sentryOrganizationUserSyncCron: process.env.SCHEDULER_SENTRY_ORGANIZATION_USER_SYNC_CRON || '0 0 * * *',
 
         sentryProjectSyncEnabling: process.env.SCHEDULER_SENTRY_PROJECT_SYNC_ENABLING || 'true',
-        sentryProjectSyncCron: process.env.SCHEDULER_SENTRY_PROJECT_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
+        sentryProjectSyncCron: process.env.SCHEDULER_SENTRY_PROJECT_SYNC_CRON || '0 0 * * *',
         
         sentryTeamSyncEnabling: process.env.SCHEDULER_SENTRY_TEAM_SYNC_ENABLING || 'true',
-        sentryTeamSyncCron: process.env.SCHEDULER_SENTRY_TEAM_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
+        sentryTeamSyncCron: process.env.SCHEDULER_SENTRY_TEAM_SYNC_CRON || '0 0 * * *',
 
         projectSentrySummaryReportEnabling: process.env.SCHEDULER_PROJECT_SENTRY_SUMMARY_REPORT_ENABLING || 'true',
-        projectSentrySummaryReportCron: process.env.SCHEDULER_PROJECT_SENTRY_SUMMARY_REPORT_CRON || CronExpressionConstant.EVERY_1_DAY,
+        projectSentrySummaryReportCron: process.env.SCHEDULER_PROJECT_SENTRY_SUMMARY_REPORT_CRON || '0 0 * * *',
     }
 };

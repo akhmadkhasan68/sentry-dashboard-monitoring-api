@@ -10,7 +10,7 @@ export class ResponseFormat {
         };
     }
 
-    static errorResponse<T>(message: string, code: number, errorStack: string): IResponseBase<T> {
+    static errorResponse<T>(message: string, code: number, errorStack?: string): IResponseBase<T> {
         return {
             code: code,
             message: message,

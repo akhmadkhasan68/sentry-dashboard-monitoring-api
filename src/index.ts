@@ -1,5 +1,5 @@
 import 'module-alias/register';
-import express from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import { config } from '@config/config';
 import configureRouter from '@routes/index.routes';
 import configureDI from './app.module';
@@ -36,6 +36,6 @@ configureRouter(app, diContainer);
 new SchedulerService(diContainer).start();
 
 // Add Exception Handler Middleware
-app.use(errorHandlerMiddleware);
+app.use(errorHandlerMiddleware as ErrorRequestHandler);
 
 app.listen(port, () => logger.setLogger.info(`Server is running on port ${port}... 🚀`));
