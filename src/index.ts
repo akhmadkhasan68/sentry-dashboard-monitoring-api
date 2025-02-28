@@ -36,6 +36,6 @@ configureRouter(app, diContainer);
 new SchedulerService(diContainer).start();
 
 // Add Exception Handler Middleware
-app.use(errorHandlerMiddleware as ErrorRequestHandler);
+app.use(errorHandlerMiddleware as unknown as ErrorRequestHandler);
 
 app.listen(port, () => logger.setLogger.info(`Server is running on port ${port}... 🚀`));

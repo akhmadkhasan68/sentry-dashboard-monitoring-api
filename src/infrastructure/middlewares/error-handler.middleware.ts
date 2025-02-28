@@ -22,7 +22,7 @@ export const errorHandlerMiddleware = (
     }
 
     
-    return res.status(statusCode).json(
+    res.status(statusCode).json(
         ResponseFormat.errorResponse<null>(message, statusCode, error.stack as string)
     );
 }
