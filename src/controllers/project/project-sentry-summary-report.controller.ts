@@ -21,6 +21,18 @@ export class ProjectSentrySummaryReportController {
         }
     }
 
+    public async findByProjectId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const projectId = req.params.projectId;
+            const data = await this.projectSentrySummaryReportService.findByProjectId(projectId);
+            const responseData: ProjectSentrySummaryReportDto[] = data.map((item) => ProjectSentrySummaryReportDto.parse(item));
+
+            res.status(HttpStatusCode.Ok).json(ResponseFormat.successResponse<ProjectSentrySummaryReportDto[]>("OK", HttpStatusCode.Ok, responseData));
+        } catch (error) {
+            next(error);
+        }
+    }
+
     public async generateProjectSentryIssueUnresolvedReport(req: Request, res: Response, next: NextFunction) {
         try {
             const projectId = req.params.projectId;

@@ -27,6 +27,18 @@ export class ProjectSentrySummaryReportService {
         }
     }
 
+    public async findByProjectId(projectId: string): Promise<IProjectSentrySummaryReport[]> {
+        try {
+            return await this.projectSentrySummaryReportRepository.findByConditionsWithRelations({
+                projectId,
+            });
+        } catch (error) {
+            this.logger.setLogger.error(`Error when get project sentry summary report by project id: ${error.message}`);
+
+            throw error;
+        }
+    }
+
     public async findByIdWithRelations(id: string): Promise<IProjectSentrySummaryReport> {
         try {
             return await this.projectSentrySummaryReportRepository.findByIdWithRelations(id);

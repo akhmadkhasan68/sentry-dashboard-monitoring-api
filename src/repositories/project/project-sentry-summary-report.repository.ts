@@ -1,6 +1,6 @@
 import { ProjectSentrySummaryReportEntity } from "@database/entities/project/project-sentry-summary-report.entity";
 import { IProjectSentrySummaryReport } from "@database/interfaces/project/project-sentry-summary-report.interface";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 export class ProjectSentrySummaryReportRepository {
     constructor(
@@ -16,6 +16,16 @@ export class ProjectSentrySummaryReportRepository {
             order: {
                 projectId: "ASC",
             }
+        });
+    }
+
+    public async findByConditionsWithRelations(conditions: FindOptionsWhere<IProjectSentrySummaryReport>): Promise<IProjectSentrySummaryReport[]> {
+        return await this.projectSentrySummaryReportRepository.find({
+            where: conditions,
+            relations: [
+                "project",
+                "sentryProject",
+            ]
         });
     }
 

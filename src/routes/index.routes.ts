@@ -24,6 +24,7 @@ export default function configureRouter(app: core.Express, diContainer: DIContai
     const projectSentrySummaryReportRouter = express.Router();
     const projectSentrySummaryReportController = diContainer.get<ProjectSentrySummaryReportController>(ProjectSentrySummaryReportController.name);
     projectSentrySummaryReportRouter.get('/', projectSentrySummaryReportController.findAll.bind(projectSentrySummaryReportController));
+    projectSentrySummaryReportRouter.get('/:projectId', projectSentrySummaryReportController.findByProjectId.bind(projectSentrySummaryReportController));
     projectSentrySummaryReportRouter.get('/generate-project-sentry-issue-unresolved-report/:projectId', projectSentrySummaryReportController.generateProjectSentryIssueUnresolvedReport.bind(projectSentrySummaryReportController));
     router.use('/project-sentry-summary-reports', projectSentrySummaryReportRouter);
 
