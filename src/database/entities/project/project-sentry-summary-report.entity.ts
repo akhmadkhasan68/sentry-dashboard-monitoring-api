@@ -26,7 +26,7 @@ export class ProjectSentrySummaryReportEntity extends BaseEntity implements IPro
         type: 'varchar',
         nullable: true,
     })
-    serviceName: string;
+    serviceName: string | null;
 
     @Column({
         type: 'integer',

@@ -18,15 +18,4 @@ export class ProjectController {
             next(error);
         }
     }
-
-    public async generateProjectSentryIssueUnresolvedStatistic(req: Request, res: Response, next: NextFunction) {
-        try {
-            const projectId = req.params.projectId;
-            const data = await this.projectService.generateProjectSentryIssueUnresolvedStatistic(projectId);
-
-            res.status(HttpStatusCode.Ok).json(ResponseFormat.successResponse("OK", HttpStatusCode.Ok, data));
-        } catch (error) {
-            next(error);
-        }
-    }
 }

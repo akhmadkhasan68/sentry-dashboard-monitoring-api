@@ -5,7 +5,7 @@ import { IProject } from "./project.interface";
 export interface IProjectSentrySummaryReport extends IBase {
     projectId: string;
     sentryProjectId: string;
-    serviceName: string;
+    serviceName: string | null;
     totalIssueUnresolved: number;
 
     /* Relations */

@@ -21,6 +21,10 @@ import { SentryOrganizationUserEntity } from "@database/entities/sentry/sentry-o
 import AppDataSource from "@database/datasource.config";
 import { ProjectService } from "@services/project/project.service";
 import { ProjectController } from "@controllers/project/project.controller";
+import { ProjectSentrySummaryReportRepository } from "@repositories/project/project-sentry-summary-report.repository";
+import { ProjectSentrySummaryReportEntity } from "@database/entities/project/project-sentry-summary-report.entity";
+import { ProjectSentrySummaryReportService } from "@services/project/project-sentry-summary-report.service";
+import { ProjectSentrySummaryReportController } from "@controllers/project/project-sentry-summary-report.controller";
 
 
 export default function configureDI() {
@@ -48,6 +52,9 @@ export default function configureDI() {
         [SentryOrganizationUserRepository.name]: object(SentryOrganizationUserRepository).construct(
             AppDataSource.getRepository(SentryOrganizationUserEntity),
         ),
+        [ProjectSentrySummaryReportRepository.name]: object(ProjectSentrySummaryReportRepository).construct(
+            AppDataSource.getRepository(ProjectSentrySummaryReportEntity),
+        ),
 
         /** Services */
         [ProjectService.name]: object(ProjectService).construct(
@@ -67,10 +74,18 @@ export default function configureDI() {
             use(SentryOrganizationUserRepository),
             use(SentryApiOrganizationUserRepository),
         ),
+        [ProjectSentrySummaryReportService.name]: object(ProjectSentrySummaryReportService).construct(
+            use(ProjectSentrySummaryReportRepository),
+            use(ProjectRepository),
+            use(SentryApiOrganizationProjectRepository),
+        ),
 
         /** Controllers */
         [ProjectController.name]: object(ProjectController).construct(
             use(ProjectService),
+        ),
+        [ProjectSentrySummaryReportController.name]: object(ProjectSentrySummaryReportController).construct(
+            use(ProjectSentrySummaryReportService),
         ),
         [SentryProjectController.name]: object(SentryProjectController).construct(
             use(SentryProjectService),
