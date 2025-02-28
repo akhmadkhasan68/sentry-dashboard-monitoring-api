@@ -1,6 +1,5 @@
 import { CronJob } from "cron";
 import { SentryProjectService } from "../services/sentry/sentry-project.service";
-import { CronExpressionConstant } from "../utils/constants/cron-expression.constant";
 import { LoggerHelper } from "../infrastructure/logger/logger";
 import { IScheduler } from "./scheduler.interface";
 import { config } from "@config/config";

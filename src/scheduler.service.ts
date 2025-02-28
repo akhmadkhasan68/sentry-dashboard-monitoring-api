@@ -2,6 +2,7 @@ import DIContainer from "rsdi/dist";
 import { SentryProjectSyncScheduler } from "@scheduler/sentry-project-sync.scheduler";
 import { SentryTeamSyncScheduler } from "@scheduler/sentry-team-sync.scheduler";
 import { SentryOrganizationUserScheduler } from "@scheduler/sentry-organization-user.scheduler";
+import { ProjectSentrySummaryReportScheduler } from "@scheduler/project-sentry-summary-report.scheduler";
 
 export class SchedulerService {
     private readonly diContainer: DIContainer<{[key: string]: any;}>
@@ -16,5 +17,6 @@ export class SchedulerService {
         this.diContainer.get<SentryTeamSyncScheduler>(SentryTeamSyncScheduler.name).initScheduler();
         this.diContainer.get<SentryOrganizationUserScheduler>(SentryOrganizationUserScheduler.name).initScheduler();
         this.diContainer.get<SentryProjectSyncScheduler>(SentryProjectSyncScheduler.name).initScheduler();
+        this.diContainer.get<ProjectSentrySummaryReportScheduler>(ProjectSentrySummaryReportScheduler.name).initScheduler();
     }
 }

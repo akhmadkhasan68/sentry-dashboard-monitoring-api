@@ -11,6 +11,7 @@ export class CronExpressionConstant {
     public static readonly EVERY_6_HOURS = '0 */6 * * *';
     public static readonly EVERY_12_HOURS = '0 */12 * * *';
     public static readonly EVERY_1_DAY = '0 0 * * *';
+    public static readonly EVERY_1_DAY_AT_1AM = '0 1 * * *';
     public static readonly EVERY_2_DAYS = '0 0 */2 * *';
     public static readonly EVERY_3_DAYS = '0 0 */3 * *';
     public static readonly EVERY_7_DAYS = '0 0 */7 * *';

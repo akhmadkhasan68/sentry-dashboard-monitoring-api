@@ -37,7 +37,7 @@ export class ProjectSentrySummaryReportService {
         }
     }
     
-    public async generateProjectSentryIssueUnresolvedReport(projectId: string): Promise<IProjectSentrySummaryReport[]> {
+    public async generateProjectSentryIssueUnresolvedReport(projectId: string, isThrowable = true): Promise<IProjectSentrySummaryReport[]> {
         try {
             /**
              * [
@@ -202,6 +202,23 @@ export class ProjectSentrySummaryReportService {
             ];
         } catch (error) {
             this.logger.setLogger.error(`Error when generate project sentry issue unresolved statistic: ${error.message}`);
+            if (isThrowable) {
+                throw error;
+            }
+
+            return [];
+        }
+    }
+
+    public async generateProjectSentrySummaryReport(): Promise<void> {
+        try {
+            const projects = await this.projectRepository.findAllWithRelations();
+
+            for (const project of projects) {
+                await this.generateProjectSentryIssueUnresolvedReport(project.id as string, false);
+            }
+        } catch (error) {
+            this.logger.setLogger.error(`Error when generate project sentry summary report: ${error.message}`);
 
             throw error;
         }

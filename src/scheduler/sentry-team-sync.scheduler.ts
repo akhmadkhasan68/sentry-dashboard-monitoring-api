@@ -1,5 +1,4 @@
 import { CronJob } from "cron";
-import { CronExpressionConstant } from "../utils/constants/cron-expression.constant";
 import { LoggerHelper } from "../infrastructure/logger/logger";
 import { SentryTeamService } from "../services/sentry/sentry-team.service";
 import { IScheduler } from "./scheduler.interface";

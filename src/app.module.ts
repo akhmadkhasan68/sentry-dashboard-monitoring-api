@@ -25,6 +25,7 @@ import { ProjectSentrySummaryReportRepository } from "@repositories/project/proj
 import { ProjectSentrySummaryReportEntity } from "@database/entities/project/project-sentry-summary-report.entity";
 import { ProjectSentrySummaryReportService } from "@services/project/project-sentry-summary-report.service";
 import { ProjectSentrySummaryReportController } from "@controllers/project/project-sentry-summary-report.controller";
+import { ProjectSentrySummaryReportScheduler } from "@scheduler/project-sentry-summary-report.scheduler";
 
 
 export default function configureDI() {
@@ -100,6 +101,9 @@ export default function configureDI() {
         ),
         [SentryOrganizationUserScheduler.name]: object(SentryOrganizationUserScheduler).construct(
             use(SentryOrganizationUserService),
+        ),
+        [ProjectSentrySummaryReportScheduler.name]: object(ProjectSentrySummaryReportScheduler).construct(
+            use(ProjectSentrySummaryReportService),
         ),
     });
 

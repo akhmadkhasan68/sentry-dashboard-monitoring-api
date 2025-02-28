@@ -33,5 +33,8 @@ export const config = {
         
         sentryTeamSyncEnabling: process.env.SCHEDULER_SENTRY_TEAM_SYNC_ENABLING || 'true',
         sentryTeamSyncCron: process.env.SCHEDULER_SENTRY_TEAM_SYNC_CRON || CronExpressionConstant.EVERY_1_DAY,
+
+        projectSentrySummaryReportEnabling: process.env.SCHEDULER_PROJECT_SENTRY_SUMMARY_REPORT_ENABLING || 'true',
+        projectSentrySummaryReportCron: process.env.SCHEDULER_PROJECT_SENTRY_SUMMARY_REPORT_CRON || CronExpressionConstant.EVERY_1_DAY,
     }
 };
