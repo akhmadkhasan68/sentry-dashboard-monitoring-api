@@ -1,0 +1,12 @@
+services:
+  database:
+    image: mysql:8.4-oraclelinux8
+    environment:
+      MYSQL_ROOT_PASSWORD: "Password!123"
+      MYSQL_DATABASE: "kpi_sentry_monitoring"
+    volumes:
+      - database-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+volumes:
+  database-data: {}
