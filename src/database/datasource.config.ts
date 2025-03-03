@@ -23,6 +23,7 @@ import { DropSentryTeamProjectStatisticTable1740625383020 } from "./migrations/1
 export default new DataSource({
   type: 'mysql',
   host: config.database.host,
+  port: +config.database.port,
   username: config.database.username,
   password: config.database.password,
   database: config.database.name,
