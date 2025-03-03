@@ -1,0 +1,21 @@
+.build:docker_image:
+  stage: build
+  image: docker:20.10
+  tags: [dot]
+  allow_failure: false
+  before_script:
+    - echo ${CI_JOB_TOKEN} | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+
+build:docker_image:
+  extends: .build:docker_image
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"    
+  script:
+    - docker build
+      --progress plain
+      --tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_BRANCH}${CI_COMMIT_SHORT_SHA}
+      --tag ${CI_REGISTRY_IMAGE}:${CI_COMMIT_BRANCH}
+      --file Dockerfile
+      .
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_BRANCH}${CI_COMMIT_SHORT_SHA}
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_BRANCH}
